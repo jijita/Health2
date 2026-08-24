@@ -1,1 +1,9 @@
-
+{
+  "name": "Mon journal nourriture IA",
+  "short_name": "Journal IA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f7f8",
+  "theme_color": "#111827",
+  "lang": "fr"
+}
