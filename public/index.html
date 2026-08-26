@@ -5,158 +5,261 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#111827">
 <link rel="manifest" href="/manifest.webmanifest">
-<title>Mon journal IA</title>
+<title>CaloriPulse</title>
 <style>
-:root{--bg:#f7f7f8;--card:#fff;--text:#171717;--muted:#6b7280;--border:#e5e7eb;--soft:#f1f5f9;--accent:#111827;--warn:#92400e;--ok:#166534}
+:root{--bg:#f7f7f8;--card:#fff;--text:#171717;--muted:#6b7280;--border:#e5e7eb;--soft:#f1f5f9;--accent:#111827;--ok:#166534;--mid:#92400e;--bad:#b91c1c}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
-.wrap{max-width:720px;margin:auto;padding:18px 14px 55px}h1{font-size:27px;margin:3px 0}.sub{color:var(--muted);font-size:14px;margin-bottom:14px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:15px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
-.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:var(--soft);border-radius:14px;padding:14px}.metric b{display:block;font-size:28px}
+.wrap{max-width:760px;margin:auto;padding:18px 14px 60px}h1{font-size:29px;margin:2px 0}.sub{color:var(--muted);font-size:14px;margin-bottom:14px}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:15px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.metric{background:var(--soft);border-radius:14px;padding:14px}.metric b{display:block;font-size:27px}
 textarea,input,select,button{font:inherit}textarea,input,select{width:100%;border:1px solid var(--border);border-radius:13px;padding:12px;background:#fff}
-textarea{min-height:125px;resize:vertical}.btn{border:0;border-radius:13px;padding:13px 15px;background:var(--accent);color:white;font-weight:750;cursor:pointer}
-.btn.secondary{background:var(--soft);color:var(--text)}.btn:disabled{opacity:.55;cursor:not-allowed}
-.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1}.status{font-size:13px;color:var(--muted);margin-top:9px}
-.entry{padding:12px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr auto;gap:10px}.entry:last-child{border-bottom:0}
-.name{font-weight:700}.meta{font-size:13px;color:var(--muted)}.kcal{font-weight:800;text-align:right}.note{font-size:12px;color:var(--warn);margin-top:4px}
-.progress{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:9px}.bar{height:100%;width:0;background:#111827}
-.airesult{margin-top:12px;padding:12px;border-radius:14px;background:var(--soft);display:none}.aiitem{padding:8px 0;border-bottom:1px solid #dfe3e8}.aiitem:last-child{border-bottom:0}
-.small{font-size:12px;color:var(--muted)}.empty{text-align:center;color:var(--muted);padding:18px}.ok{color:var(--ok)}
-@media(max-width:520px){.row.stack-mobile{display:grid;grid-template-columns:1fr 1fr}.row.stack-mobile select{min-width:0}.row.stack-mobile button{min-width:0}}
+textarea{min-height:115px;resize:vertical}.btn{border:0;border-radius:13px;padding:13px 15px;background:var(--accent);color:#fff;font-weight:750;cursor:pointer}.btn.secondary{background:var(--soft);color:var(--text)}
+.btn:disabled{opacity:.55}.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.small{font-size:12px;color:var(--muted)}.progress{height:9px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:6px}.bar{height:100%;background:#111827;width:0}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.tab{padding:11px;border:1px solid var(--border);border-radius:12px;background:#fff;font-weight:700}.tab.active{background:var(--accent);color:#fff}
+.panel{display:none}.panel.active{display:block}.status{font-size:13px;color:var(--muted);margin-top:8px}.airesult{margin-top:12px;padding:12px;border-radius:14px;background:var(--soft);display:none}
+.aiitem{padding:10px 0;border-bottom:1px solid #dfe3e8}.ai-edit{display:grid;grid-template-columns:1.5fr repeat(4,.72fr);gap:6px;margin-top:6px}.ai-edit input{padding:8px}
+.entry{padding:12px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr auto;gap:10px}.entry:last-child{border-bottom:0}.name{font-weight:700}.meta{font-size:13px;color:var(--muted)}.kcal{font-weight:800;text-align:right}.empty{text-align:center;color:var(--muted);padding:18px}
+.macro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.macro{border:1px solid var(--border);border-radius:14px;padding:12px}.macro b{font-size:20px}.macro .target{font-size:12px;color:var(--muted)}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700}.good{background:#dcfce7;color:var(--ok)}.adjust{background:#fef3c7;color:var(--mid)}.off{background:#fee2e2;color:var(--bad)}
+.profile-summary{padding:10px 12px;background:var(--soft);border-radius:12px;margin-top:10px}.hidden{display:none}
+label.small{display:block;margin:7px 0 4px}
+@media(max-width:600px){.grid3{grid-template-columns:1fr 1fr}.macro-grid{grid-template-columns:1fr}.ai-edit{grid-template-columns:1fr 1fr}.ai-edit .iname{grid-column:1/-1}}
+
+.donut-wrap{display:grid;grid-template-columns:190px 1fr;gap:18px;align-items:center;margin-top:14px}
+.donut{width:180px;height:180px;border-radius:50%;position:relative;margin:auto;background:conic-gradient(#111827 0 33%,#6b7280 33% 66%,#d1d5db 66% 100%)}
+.donut::after{content:"";position:absolute;inset:32px;background:#fff;border-radius:50%}
+.donut-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;text-align:center;font-weight:800}
+.legend{display:grid;gap:9px}
+.legend-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.legend-row:last-child{border-bottom:0}
+.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:7px}
+.dot-p{background:#111827}.dot-f{background:#6b7280}.dot-c{background:#d1d5db}
+.compare{margin-top:12px;border-top:1px solid var(--border);padding-top:10px}
+.compare-row{display:grid;grid-template-columns:90px 1fr 60px 60px;gap:8px;align-items:center;margin:8px 0}
+.mini-track{height:8px;background:#e5e7eb;border-radius:999px;overflow:hidden}
+.mini-fill{height:100%;background:#111827;width:0}
+@media(max-width:600px){.donut-wrap{grid-template-columns:1fr}.compare-row{grid-template-columns:80px 1fr 50px 50px}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>🍽️ Mon journal IA</h1>
-  <div class="sub">Écris simplement ce que tu as mangé. L’IA estime calories et protéines, puis tu confirmes.</div>
+<h1>CaloriPulse</h1>
+<div class="sub">Calories, macros et habitudes alimentaires adaptées à ton objectif.</div>
 
-  <div class="card">
-    <div class="metrics">
-      <div class="metric"><span>Calories aujourd’hui</span><b id="totalKcal">0</b><span class="small">kcal</span></div>
-      <div class="metric"><span>Protéines</span><b id="totalProtein">0</b><span class="small">g</span></div>
-    </div>
-    <div class="small" style="margin-top:12px">Objectif calories</div>
-    <input id="goal" type="number" value="1600" min="800" max="4000" step="50">
-    <div class="progress"><div id="bar" class="bar"></div></div>
-    <div id="remaining" class="small" style="margin-top:6px"></div>
+<div class="card">
+  <div class="row" style="align-items:center">
+    <div><b>Mon profil</b><div id="profileLine" class="small">Configure ton objectif alimentaire.</div></div>
+    <button class="btn secondary" id="profileBtn">⚙️ Configurer</button>
   </div>
-
-  <div class="card">
-    <b>Qu’est-ce que tu as mangé ?</b>
-    <textarea id="foodText" placeholder="Ex. Ce matin j’ai mangé une pita de 100 calories, une cuillère à café de mayo, une poignée de poulet, beaucoup de laitue et un café Nespresso."></textarea>
-    <div class="row stack-mobile" style="margin-top:10px">
-      <select id="meal">
-        <option>Déjeuner</option><option>Dîner</option><option>Souper</option><option>Collation</option><option>Plusieurs repas</option>
-      </select>
-      <button class="btn" id="estimateBtn">✨ Estimer avec l’IA</button>
+  <div id="profileForm" class="hidden">
+    <div class="grid3" style="margin-top:10px">
+      <div><label class="small">Âge</label><input id="age" type="number" min="18" max="100" placeholder="35"></div>
+      <div><label class="small">Taille (cm)</label><input id="height" type="number" min="120" max="230" placeholder="167"></div>
+      <div><label class="small">Poids (kg)</label><input id="weight" type="number" min="35" max="300" step=".1" placeholder="76"></div>
+      <div><label class="small">Objectif (kg)</label><input id="goalWeight" type="number" min="35" max="300" step=".1" placeholder="63"></div>
+      <div><label class="small">Activité</label><select id="activity"><option value="low">Faible</option><option value="moderate">Modérée</option><option value="high">Élevée</option></select></div>
+      <div><label class="small">Style alimentaire</label><select id="diet"><option value="balanced">Équilibré</option><option value="highprotein">Riche en protéines</option><option value="lowcarb">Low-carb</option><option value="keto">Keto</option><option value="custom">Personnalisé</option></select></div>
     </div>
-    <div id="status" class="status"></div>
-    <div id="aiResult" class="airesult"></div>
-  </div>
-
-  <div class="card">
-    <b>Aujourd’hui</b>
-    <div id="entries"></div>
+    <div id="customMacros" class="grid3 hidden" style="margin-top:8px">
+      <div><label class="small">Protéines %</label><input id="customP" type="number" min="5" max="80" value="30"></div>
+      <div><label class="small">Lipides %</label><input id="customF" type="number" min="5" max="90" value="30"></div>
+      <div><label class="small">Glucides %</label><input id="customC" type="number" min="0" max="90" value="40"></div>
+    </div>
+    <label class="small">Objectif calories quotidien</label>
+    <input id="goal" type="number" min="1000" max="4000" step="50" value="1600">
+    <button class="btn" id="saveProfile" style="width:100%;margin-top:10px">Enregistrer mon profil</button>
+    <div class="small" style="margin-top:7px">Les cibles sont des repères de suivi, pas une prescription médicale.</div>
   </div>
 </div>
 
-<script>
-const $=id=>document.getElementById(id);
-const day=()=>new Date().toLocaleDateString('en-CA');
-const storageKey=()=> 'food_ai_'+day();
-let entries=JSON.parse(localStorage.getItem(storageKey())||'[]');
-let pending=[];
-let goal=Number(localStorage.getItem('food_ai_goal')||1600);
-$('goal').value=goal;
+<div class="card">
+  <div class="metrics">
+    <div class="metric"><span>Calories aujourd’hui</span><b id="totalKcal">0</b><span class="small">kcal</span></div>
+    <div class="metric"><span>Reste</span><b id="remainingKcal">0</b><span class="small">kcal</span></div>
+  </div>
+  <div class="progress"><div id="calBar" class="bar"></div></div>
+</div>
 
-function save(){localStorage.setItem(storageKey(),JSON.stringify(entries))}
+<div class="card">
+  <div class="row" style="align-items:center"><div><b>Répartition des macros</b><div id="dietLabel" class="small"></div></div><span id="balanceBadge" class="badge adjust">Pas assez de données</span></div>
+  <div class="macro-grid" style="margin-top:12px">
+    <div class="macro"><div>Protéines</div><b><span id="pNow">0</span> g</b><div class="target">Cible ≈ <span id="pTarget">0</span> g</div><div class="progress"><div id="pBar" class="bar"></div></div></div>
+    <div class="macro"><div>Lipides</div><b><span id="fNow">0</span> g</b><div class="target">Cible ≈ <span id="fTarget">0</span> g</div><div class="progress"><div id="fBar" class="bar"></div></div></div>
+    <div class="macro"><div>Glucides</div><b><span id="cNow">0</span> g</b><div class="target">Cible ≈ <span id="cTarget">0</span> g</div><div class="progress"><div id="cBar" class="bar"></div></div></div>
+  </div>
+  
+<div id="balanceText" class="profile-summary small">Ajoute quelques aliments pour voir comment ta journée se répartit.</div>
+
+<div class="donut-wrap">
+  <div class="donut" id="macroDonut">
+    <div class="donut-center"><div><span id="macroCenter">0</span><div class="small">kcal macros</div></div></div>
+  </div>
+  <div class="legend">
+    <div class="legend-row"><div><span class="legend-dot dot-p"></span>Protéines</div><b id="pPct">0%</b><span class="small" id="pGoalPct">cible 0%</span></div>
+    <div class="legend-row"><div><span class="legend-dot dot-f"></span>Lipides</div><b id="fPct">0%</b><span class="small" id="fGoalPct">cible 0%</span></div>
+    <div class="legend-row"><div><span class="legend-dot dot-c"></span>Glucides</div><b id="cPct">0%</b><span class="small" id="cGoalPct">cible 0%</span></div>
+  </div>
+</div>
+
+<div class="compare">
+  <b class="small">Réel vs cible</b>
+  <div class="compare-row"><span>Protéines</span><div class="mini-track"><div id="cmpP" class="mini-fill"></div></div><span id="cmpPNow" class="small">0%</span><span id="cmpPTarget" class="small">0%</span></div>
+  <div class="compare-row"><span>Lipides</span><div class="mini-track"><div id="cmpF" class="mini-fill"></div></div><span id="cmpFNow" class="small">0%</span><span id="cmpFTarget" class="small">0%</span></div>
+  <div class="compare-row"><span>Glucides</span><div class="mini-track"><div id="cmpC" class="mini-fill"></div></div><span id="cmpCNow" class="small">0%</span><span id="cmpCTarget" class="small">0%</span></div>
+  <div class="small">Colonne 1 = répartition actuelle • colonne 2 = cible de ton profil</div>
+</div>
+</div>
+
+
+<div class="card">
+  <div class="tabs"><button class="tab active" data-tab="ai">✨ Avec l’IA</button><button class="tab" data-tab="manual">✍️ Manuel</button></div>
+
+  <div id="panel-ai" class="panel active">
+    <b>Qu’est-ce que tu as mangé ?</b>
+    <textarea id="foodText" placeholder="Ex. 2 pointes de pizza aux légumes, une banane et un shake protéiné avec un demi-verre de lait."></textarea>
+    <div class="row" style="margin-top:10px"><select id="mealAI"><option>Déjeuner</option><option>Dîner</option><option>Souper</option><option>Collation</option><option>Plusieurs repas</option></select><button class="btn" id="estimateBtn">✨ Estimer</button></div>
+    <div id="status" class="status"></div><div id="aiResult" class="airesult"></div>
+  </div>
+
+  <div id="panel-manual" class="panel">
+    <b>Ajouter moi-même</b>
+    <label class="small">Aliment</label><input id="mName" placeholder="Ex. Pita">
+    <div class="grid3" style="margin-top:8px">
+      <div><label class="small">Calories</label><input id="mKcal" type="number" min="0"></div>
+      <div><label class="small">Protéines g</label><input id="mP" type="number" min="0" step=".5"></div>
+      <div><label class="small">Lipides g</label><input id="mF" type="number" min="0" step=".5"></div>
+      <div><label class="small">Glucides g</label><input id="mC" type="number" min="0" step=".5"></div>
+      <div><label class="small">Repas</label><select id="mealManual"><option>Déjeuner</option><option>Dîner</option><option>Souper</option><option>Collation</option></select></div>
+    </div>
+    <button class="btn" id="manualAdd" style="width:100%;margin-top:10px">+ Ajouter au journal</button>
+  </div>
+</div>
+
+<div class="card"><b>Aujourd’hui</b><div id="entries"></div></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id), day=()=>new Date().toLocaleDateString('en-CA');
+const presets={
+ balanced:{p:25,f:30,c:45,label:'Équilibré'},
+ highprotein:{p:35,f:30,c:35,label:'Riche en protéines'},
+ lowcarb:{p:30,f:45,c:25,label:'Low-carb'},
+ keto:{p:25,f:70,c:5,label:'Keto'}
+};
+let entries=JSON.parse(localStorage.getItem('cp_food_'+day())||'[]');
+let profile=JSON.parse(localStorage.getItem('cp_profile')||'{"goal":1600,"diet":"balanced","activity":"low"}');
+let pending=[];
+
 function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function save(){localStorage.setItem('cp_food_'+day(),JSON.stringify(entries))}
+function getSplit(){
+ if(profile.diet==='custom') return {p:+profile.customP||30,f:+profile.customF||30,c:+profile.customC||40,label:'Personnalisé'};
+ return presets[profile.diet]||presets.balanced;
+}
+function targets(){
+ const s=getSplit(), cal=+profile.goal||1600;
+ return {p:cal*s.p/100/4,f:cal*s.f/100/9,c:cal*s.c/100/4,split:s};
+}
+function totals(){
+ return entries.reduce((a,e)=>({kcal:a.kcal+(+e.calories||0),p:a.p+(+e.protein_g||0),f:a.f+(+e.fat_g||0),c:a.c+(+e.carbs_g||0)}),{kcal:0,p:0,f:0,c:0});
+}
+function balanceStatus(t){
+ const macroCal=t.p*4+t.f*9+t.c*4;
+ if(macroCal<250) return {cls:'adjust',title:'Pas assez de données',text:'Ajoute encore quelques aliments avant d’évaluer la répartition.'};
+ const actual={p:t.p*4/macroCal*100,f:t.f*9/macroCal*100,c:t.c*4/macroCal*100}, target=getSplit();
+ const diffs=[Math.abs(actual.p-target.p),Math.abs(actual.f-target.f),Math.abs(actual.c-target.c)];
+ const worst=Math.max(...diffs);
+ if(worst<=6) return {cls:'good',title:'Dans ta cible',text:`Ta répartition actuelle est proche du profil ${target.label.toLowerCase()}.`};
+ if(worst<=13) return {cls:'adjust',title:'À ajuster',text:`La journée reste raisonnable, mais ta répartition s’éloigne un peu de ton profil ${target.label.toLowerCase()}.`};
+ return {cls:'off',title:'Écart important',text:`La répartition actuelle est assez différente de ton profil ${target.label.toLowerCase()}. Ce n’est pas un échec : regarde surtout la tendance sur plusieurs repas.`};
+}
 function render(){
-  const kcal=entries.reduce((s,e)=>s+Number(e.calories||0),0);
-  const protein=entries.reduce((s,e)=>s+Number(e.protein_g||0),0);
-  $('totalKcal').textContent=Math.round(kcal);
-  $('totalProtein').textContent=Math.round(protein);
-  $('bar').style.width=Math.min(100,kcal/goal*100)+'%';
-  $('remaining').textContent=kcal<=goal?`${Math.round(goal-kcal)} kcal restantes sur ${goal}`:`${Math.round(kcal-goal)} kcal au-dessus de ${goal}`;
-  $('entries').innerHTML=entries.length?entries.map((e,i)=>`
-    <div class="entry">
-      <div>
-        <div class="name">${esc(e.name)}</div>
-        <div class="meta">${esc(e.meal||'')} • ${Math.round(e.protein_g||0)} g protéines</div>
-        ${e.note?`<div class="note">${esc(e.note)}</div>`:''}
-      </div>
-      <div>
-        <div class="kcal">${Math.round(e.calories)} kcal</div>
-        <button class="btn secondary" style="padding:6px 8px;margin-top:5px" onclick="del(${i})">Supprimer</button>
-      </div>
-    </div>`).join(''):'<div class="empty">Rien de logué pour le moment.</div>';
+ const t=totals(), tg=targets(), goal=+profile.goal||1600;
+ $('totalKcal').textContent=Math.round(t.kcal); $('remainingKcal').textContent=Math.round(Math.max(0,goal-t.kcal)); $('calBar').style.width=Math.min(100,t.kcal/goal*100)+'%';
+ $('pNow').textContent=Math.round(t.p);$('fNow').textContent=Math.round(t.f);$('cNow').textContent=Math.round(t.c);
+ $('pTarget').textContent=Math.round(tg.p);$('fTarget').textContent=Math.round(tg.f);$('cTarget').textContent=Math.round(tg.c);
+ $('pBar').style.width=Math.min(100,t.p/tg.p*100)+'%';$('fBar').style.width=Math.min(100,t.f/tg.f*100)+'%';$('cBar').style.width=Math.min(100,t.c/tg.c*100)+'%';
+ $('dietLabel').textContent=`Cible ${tg.split.label} : ${tg.split.p}% protéines · ${tg.split.f}% lipides · ${tg.split.c}% glucides`;
+ const st=balanceStatus(t);$('balanceBadge').className='badge '+st.cls;$('balanceBadge').textContent=st.title;$('balanceText').textContent=st.text;
+
+ const macroCal=t.p*4+t.f*9+t.c*4;
+ let pPct=0,fPct=0,cPct=0;
+ if(macroCal>0){
+   pPct=t.p*4/macroCal*100;
+   fPct=t.f*9/macroCal*100;
+   cPct=t.c*4/macroCal*100;
+ }
+ const s=tg.split;
+ $('macroCenter').textContent=Math.round(macroCal);
+ $('pPct').textContent=Math.round(pPct)+'%';
+ $('fPct').textContent=Math.round(fPct)+'%';
+ $('cPct').textContent=Math.round(cPct)+'%';
+ $('pGoalPct').textContent='cible '+s.p+'%';
+ $('fGoalPct').textContent='cible '+s.f+'%';
+ $('cGoalPct').textContent='cible '+s.c+'%';
+ $('macroDonut').style.background=`conic-gradient(#111827 0 ${pPct}%, #6b7280 ${pPct}% ${pPct+fPct}%, #d1d5db ${pPct+fPct}% 100%)`;
+
+ const maxPct=Math.max(1,pPct,fPct,cPct,s.p,s.f,s.c);
+ const scale=v=>Math.min(100,(v/maxPct)*100);
+ $('cmpP').style.width=scale(pPct)+'%';
+ $('cmpF').style.width=scale(fPct)+'%';
+ $('cmpC').style.width=scale(cPct)+'%';
+ $('cmpPNow').textContent=Math.round(pPct)+'%';
+ $('cmpFNow').textContent=Math.round(fPct)+'%';
+ $('cmpCNow').textContent=Math.round(cPct)+'%';
+ $('cmpPTarget').textContent=s.p+'%';
+ $('cmpFTarget').textContent=s.f+'%';
+ $('cmpCTarget').textContent=s.c+'%';
+
+ const pbits=[]; if(profile.weight)pbits.push(`${profile.weight} kg → ${profile.goalWeight||'—'} kg`);pbits.push(tg.split.label);pbits.push(`${goal} kcal/j`);
+ $('profileLine').textContent=pbits.join(' • ');
+ $('entries').innerHTML=entries.length?entries.map((e,i)=>`<div class="entry"><div><div class="name">${esc(e.name)}</div><div class="meta">${esc(e.meal)} • P ${Math.round(e.protein_g||0)}g • L ${Math.round(e.fat_g||0)}g • G ${Math.round(e.carbs_g||0)}g</div></div><div><div class="kcal">${Math.round(e.calories)} kcal</div><button class="btn secondary" style="padding:6px 8px;margin-top:5px" onclick="del(${i})">Supprimer</button></div></div>`).join(''):'<div class="empty">Rien de logué pour le moment.</div>';
 }
 window.del=i=>{entries.splice(i,1);save();render()}
-$('goal').onchange=()=>{goal=Number($('goal').value||1600);localStorage.setItem('food_ai_goal',goal);render()}
 
-async function checkHealth(){
-  try{
-    const r=await fetch('/health',{cache:'no-store'});
-    if(!r.ok) throw new Error();
-    const x=await r.json();
-    if(!x.aiConfigured){
-      $('status').innerHTML='<span style="color:#b91c1c">La clé OpenAI n’est pas encore configurée sur le serveur.</span>';
-    }
-  }catch(e){}
+$('profileBtn').onclick=()=>$('profileForm').classList.toggle('hidden');
+$('diet').onchange=()=>$('customMacros').classList.toggle('hidden',$('diet').value!=='custom');
+function loadProfile(){
+ ['age','height','weight','goalWeight','activity','diet','customP','customF','customC','goal'].forEach(id=>{if(profile[id]!=null && $(id))$(id).value=profile[id]});
+ $('customMacros').classList.toggle('hidden',$('diet').value!=='custom');
 }
-checkHealth();
-
-$('estimateBtn').onclick=async()=>{
-  const text=$('foodText').value.trim();
-  if(!text)return alert('Écris d’abord ce que tu as mangé.');
-  $('estimateBtn').disabled=true;
-  $('status').textContent='Estimation en cours…';
-  $('aiResult').style.display='none';
-
-  try{
-    const r=await fetch('/api/estimate',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({text,meal:$('meal').value})
-    });
-    let data={};
-    try{data=await r.json()}catch{}
-    if(!r.ok) throw new Error(data.error||`Erreur serveur (${r.status})`);
-
-    pending=data.items||[];
-    const total=pending.reduce((s,x)=>s+Number(x.calories||0),0);
-    const protein=pending.reduce((s,x)=>s+Number(x.protein_g||0),0);
-
-    $('aiResult').innerHTML=`
-      <b>Estimation : ${Math.round(total)} kcal · ${Math.round(protein)} g protéines</b>
-      ${pending.map(x=>`
-        <div class="aiitem">
-          <b>${esc(x.name)}</b> — ${Math.round(x.calories)} kcal · ${Math.round(x.protein_g||0)} g prot.
-          ${x.note?`<div class="small">${esc(x.note)}</div>`:''}
-        </div>`).join('')}
-      <div class="row" style="margin-top:10px">
-        <button class="btn" id="confirmBtn">✓ Ajouter au journal</button>
-        <button class="btn secondary" id="cancelBtn">Modifier</button>
-      </div>
-      <div class="small" style="margin-top:8px">Estimation approximative : précise quantité, marque ou calories de l’emballage quand tu les connais.</div>`;
-    $('aiResult').style.display='block';
-    $('status').innerHTML='<span class="ok">Estimation terminée.</span>';
-
-    $('confirmBtn').onclick=()=>{
-      entries.push(...pending.map(x=>({...x,meal:$('meal').value,time:new Date().toISOString()})));
-      save();render();pending=[];$('foodText').value='';$('aiResult').style.display='none';$('status').textContent='';
-    };
-    $('cancelBtn').onclick=()=>{$('aiResult').style.display='none';$('status').textContent='Modifie ton texte puis relance l’estimation.'};
-  }catch(e){
-    $('status').innerHTML='<span style="color:#b91c1c">Erreur : '+esc(e.message)+'</span>';
-  }finally{
-    $('estimateBtn').disabled=false;
-  }
+$('saveProfile').onclick=()=>{
+ const d=$('diet').value;
+ if(d==='custom'){
+   const s=+$('customP').value + +$('customF').value + +$('customC').value;
+   if(Math.abs(s-100)>0.1)return alert('Les pourcentages personnalisés doivent totaliser 100 %.');
+ }
+ profile={age:+$('age').value||null,height:+$('height').value||null,weight:+$('weight').value||null,goalWeight:+$('goalWeight').value||null,activity:$('activity').value,diet:d,customP:+$('customP').value||30,customF:+$('customF').value||30,customC:+$('customC').value||40,goal:+$('goal').value||1600};
+ localStorage.setItem('cp_profile',JSON.stringify(profile));$('profileForm').classList.add('hidden');render();
 };
-render();
 
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('panel-'+b.dataset.tab).classList.add('active')});
+
+$('manualAdd').onclick=()=>{
+ const name=$('mName').value.trim(); if(!name)return alert('Écris le nom de l’aliment.');
+ const calories=+$('mKcal').value; if($('mKcal').value==='')return alert('Entre les calories.');
+ entries.push({name,calories,protein_g:+$('mP').value||0,fat_g:+$('mF').value||0,carbs_g:+$('mC').value||0,meal:$('mealManual').value,time:new Date().toISOString()});
+ save();['mName','mKcal','mP','mF','mC'].forEach(id=>$(id).value='');render();
+};
+
+function renderPending(){
+ const total=pending.reduce((s,x)=>s+(+x.calories||0),0);
+ $('aiResult').innerHTML=`<b>Estimation : ${Math.round(total)} kcal</b><div class="small">Tu peux tout corriger avant d’ajouter.</div>${pending.map((x,i)=>`<div class="aiitem"><div class="ai-edit"><input class="iname" id="n${i}" value="${esc(x.name)}"><input id="k${i}" type="number" value="${Math.round(x.calories||0)}" title="Calories"><input id="p${i}" type="number" value="${Math.round((x.protein_g||0)*10)/10}" title="Protéines"><input id="f${i}" type="number" value="${Math.round((x.fat_g||0)*10)/10}" title="Lipides"><input id="c${i}" type="number" value="${Math.round((x.carbs_g||0)*10)/10}" title="Glucides"></div><div class="small">Nom · kcal · protéines · lipides · glucides</div></div>`).join('')}<div class="row" style="margin-top:10px"><button class="btn" id="confirm">✓ Ajouter au journal</button><button class="btn secondary" id="cancel">Modifier</button></div>`;
+ $('aiResult').style.display='block';
+ $('confirm').onclick=()=>{entries.push(...pending.map((x,i)=>({...x,name:$('n'+i).value.trim()||x.name,calories:+$('k'+i).value||0,protein_g:+$('p'+i).value||0,fat_g:+$('f'+i).value||0,carbs_g:+$('c'+i).value||0,meal:$('mealAI').value,time:new Date().toISOString()})));save();pending=[];$('foodText').value='';$('aiResult').style.display='none';$('status').textContent='';render()};
+ $('cancel').onclick=()=>{$('aiResult').style.display='none'};
 }
+$('estimateBtn').onclick=async()=>{
+ const text=$('foodText').value.trim();if(!text)return alert('Écris ce que tu as mangé.');
+ $('estimateBtn').disabled=true;$('status').textContent='Estimation en cours…';
+ try{
+  const r=await fetch('/api/estimate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text,meal:$('mealAI').value,diet:getSplit().label})});
+  const data=await r.json();if(!r.ok)throw new Error(data.error||'Erreur serveur');
+  pending=data.items||[];renderPending();$('status').textContent='Estimation terminée.';
+ }catch(e){$('status').textContent='Erreur : '+e.message}finally{$('estimateBtn').disabled=false}
+};
+loadProfile();render();
 </script>
-</body>
-</html>
+</body></html>

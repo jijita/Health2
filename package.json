@@ -1,6 +1,6 @@
 {
-  "name": "journal-nourriture-ia",
-  "version": "1.1.0",
+  "name": "caloripulse",
+  "version": "5.0.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -10,7 +10,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^5.1.0",
-    "openai": "^5.19.1"
+    "@google/genai": "^1.30.0",
+    "express": "^5.1.0"
   }
 }

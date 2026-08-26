@@ -1,13 +1,13 @@
 services:
   - type: web
-    name: mon-journal-nourriture-ia
+    name: caloripulse
     runtime: node
     plan: free
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /health
     envVars:
-      - key: OPENAI_API_KEY
+      - key: GEMINI_API_KEY
         sync: false
-      - key: OPENAI_MODEL
-        value: gpt-5.6-luna
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash

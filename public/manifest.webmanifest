@@ -1,6 +1,6 @@
 {
-  "name": "Mon journal nourriture IA",
-  "short_name": "Journal IA",
+  "name": "CaloriPulse",
+  "short_name": "CaloriPulse",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f7f7f8",
